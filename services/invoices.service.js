@@ -1,3 +1,5 @@
+const res = require("express/lib/response")
+
 class InvoicesServices{
 
     constructor(){
@@ -85,7 +87,8 @@ class InvoicesServices{
     }
 
     findOne(id){
-        return this.invoices[id]
+        const result = this.invoices.find( invoice => invoice.id == id)
+        return result
     }
 
     getList(){
