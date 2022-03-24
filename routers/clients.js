@@ -1,28 +1,13 @@
 const express = require('express')
 
+const clientsServices = require('./../services/clients.service')
+
 const router = express.Router()
+const service = new clientsServices()
 
 router.get('/', (req, res) => {
-    res.status(200).json([
-        {
-            id : 1,
-            name : 'Harry',
-            document : '102920'
-
-        },
-        {
-            id : 2,
-            name : 'Mafe',
-            document : '102920'
-
-        },
-        {
-            id : 3,
-            name : 'Julian',
-            document : '102920'
-
-        },
-    ])
+    const clientsList = service.getList()
+    res.status(200).json(clientsList)
 })
 
 router.get('/:id', (req, res) => {
@@ -34,11 +19,9 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const body = req.body
-    res.status(201).json({
-        message : 'created',
-        data : body
-    })
+    const {id,name, lastName, document, numberCell, address} = req.body
+    const create = service.create(id,name,lastName,document,numberCell,address)
+    res.status(201).json(create)
 })
 
 router.patch('/:id', (req, res) => {

@@ -1,42 +1,25 @@
 const express = require('express')
 
+const InvoicesServices = require('./../services/invoices.service')
+
 const router = express.Router()
+const service = new InvoicesServices()
 
 router.get('/', (req, res) => {
-    res.json([
-        {
-            id : 1,
-            name : 'bulls S.A.S'
-        },
-        {
-            id : 2,
-            name : 'Copias S.A'
-        },
-        {
-            id : 3,
-            name : 'Dell inc'
-        },
-        {
-            id : 4,
-            name : 'Uptc'
-        },
-    ])
+    const invoicesList = service.getList()
+    res.status(200).json(invoicesList)
 })
 
 router.get('/:id',(req, res) => {
     const { id } = req.params
-    res.json({
-        id : 4,
-        name : 'Uptc'
-    })
+    const invoice = service.findOne(id)
+    res.status(200).json(invoice)
 })
 
 router.post('/',(req, res) => {
-    const body = req.body
-    res.json({
-        message : 'creado',
-        body
-    })
+    const {id, client, business, products} = req.body
+    const invoice = service.create(id, client, business, products)
+    res.status(201).json(invoice)
 })
 
 router.patch('/:id', (req, res) => {
@@ -52,11 +35,8 @@ router.patch('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     const {id} = req.params
-    res.json({
-        message : 'borrado',
-        id
-
-    }) 
+    const invoice = service.delete(id)
+    res.status(200).json(invoice) 
 })
 
 
